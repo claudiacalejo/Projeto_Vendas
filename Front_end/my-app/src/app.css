@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+
+
+}
+
+.container_second_column{
+    flex:1;
+}
+
+.container_home{
+    height: 100vh;
+}
+
+.featuredSub{
+    font-size: 15px;
+    color: gray;
+}
