@@ -1,4 +1,4 @@
 mysql_host: 'localhost'
 mysql_user: 'root'
 mysql_password: 'my-secret-pw'
-mysql_db: 'projeto_despesas'
+mysql_db: 'db_vendas'
