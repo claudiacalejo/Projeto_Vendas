@@ -1,18 +1,8 @@
-from flask import Blueprint, request
-import yaml
-import mysql.connector
 from flask import jsonify
+from connection_to_db import mydb
+from flask import Blueprint, request
 
 clientes = Blueprint("clientes", __name__)
-
-#Configure DB
-db = yaml.safe_load(open('db.yaml'))
-mydb = mysql.connector.connect(
-    host = db['mysql_host'],
-    user = db['mysql_user'],
-    password = db['mysql_password'],
-    database = db['mysql_db']
-)
 
 #CRIAR UM CLIENTE
 @clientes.route('/criar_cliente', methods={'GET','POST'})
@@ -32,7 +22,7 @@ def criar_cliente():
         )
         mycursor.execute(mysql,val)
         mydb.commit()
-    return "hello"
+    return "Novo Cliente criado com sucesso"
 
 #DELETE UM CLIENTE
 @clientes.route('/delete_cliente',  methods=['GET', 'DELETE'])
@@ -44,7 +34,7 @@ def delete_cliente():
         mysql = f"DELETE FROM clientes WHERE id_cliente = {val} "
         mycursor.execute(mysql)
         mydb.commit()
-    return "apagado"
+    return "Cliente Apagado"
 
 #VER TODOS OS CLIENTES
 @clientes.route('/ver_clientes_todos',  methods=['GET'])
@@ -90,4 +80,4 @@ def update_cliente():
         )
         mycursor.execute(mysql,val)
         mydb.commit()
-    return "bye"
+    return "Cliente updated"
