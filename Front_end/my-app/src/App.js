@@ -1,18 +1,18 @@
+import "./app.css";
+
 import Topbar from "./componentes/topbar/Topbar";
-import Sidebar from "./componentes/sidebar/Sidebar"
-import Home from "./componentes/pages/home/Home"
-import "./app.css"
-import {BrowserRouter as Router, Routes, Route,} from "react-router-dom";
-import UserList from "./componentes/pages/userList/UserList";
+import Home from "./componentes/pages/home/Home";
 import User from "./componentes/pages/user/User";
+import Sidebar from "./componentes/sidebar/Sidebar";
 import NewUser from "./componentes/pages/newUser/NewUser";
 import Produtos from "./componentes/pages/produtos/Produtos";
-
+import UserList from "./componentes/pages/userList/UserList";
+import {BrowserRouter as Router, Routes, Route,} from "react-router-dom";
 
 function App() {
   return (
     <Router>
-      <div class="container">
+      <div className="container">
         <Sidebar/>
         <div className="container_second_column"> 
           <Topbar/>

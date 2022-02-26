@@ -1,6 +1,7 @@
 import "./user.css"
-import {CalendarToday, PermIdentity, PhoneAndroid, Publish} from '@material-ui/icons'
+
 import { Link } from "react-router-dom"
+import {CalendarToday, PermIdentity, PhoneAndroid, Publish} from '@material-ui/icons'
 
 export default function User() {
   return (

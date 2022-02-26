@@ -1,12 +1,18 @@
 from flask import Flask
+from flask_cors import CORS
 from blueprints.extras import extras
 from blueprints.clientes import clientes
 from blueprints.produtos import produtos
 from blueprints.encomendas import encomendas
 from blueprints.encomendas_extra import encomendas_extras
 from blueprints.encomendas_produtos import encomendas_produtos
+import json
 
 app = Flask(__name__)
+
+CORS(app)
+
+
 app.register_blueprint(clientes, url_prefix="/clientes")
 app.register_blueprint(produtos, url_prefix="/produtos")
 app.register_blueprint(encomendas, url_prefix="/encomendas")

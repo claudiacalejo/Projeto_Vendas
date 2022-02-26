@@ -1,39 +1,17 @@
 import './userList.css'
 import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from '@material-ui/icons';
+import { userrows } from '../../../data';
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from 'axios';
-import Alert from '@mui/material/Alert';
-import React from 'react'
-import Snackbar from '@mui/material/Snackbar';
+import { useEffect, useState } from "react"
 
 const UserList = () => {
-
   const [data, setData] = useState([]);
-  const [open, setOpen] = React.useState(false);
-  const [erro, setErro] = React.useState(false);
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }  setOpen(false);
-  };
-
-  const handleCloseErro = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }  setErro(false);
-  };
-
-
-  function handleDelete(id_cliente){
-    console.log(id_cliente)
-    axios.delete(`http://127.0.0.1:5000/clientes/delete_cliente`, {data: {'id_cliente' : id_cliente}})
-      .then (res =>  setOpen(true))
-      .catch(err => setErro(true));
+  const handleDelete = (id) => {
+    setData(data.filter((item)=> item.id !== id));
   }
-  
+
   const columns = [
     {field: 'id_cliente', headerName: 'Número Cliente', width: 120 },
     {field: 'nome_cliente', headerName: 'Nome', width: 250},
@@ -49,7 +27,7 @@ const UserList = () => {
           <Link to={"/Ver%20Clientes/"+params.row.id_cliente}>
             <button className='userListEdit'>Edit</button> 
           </Link>
-          <DeleteOutline className='userListDelete' onClick={() => handleDelete(params.row.id_cliente)}/>
+          <DeleteOutline className='userListDelete' onClick={()=>handleDelete(params.row.id)}/>
         </>
       )
     }},
@@ -73,19 +51,9 @@ const UserList = () => {
         pageSize={10}
         rowsPerPageOptions={[5]}
         getRowId={row => row.id_cliente}
+        
+        //checkboxSelection
       />
- 
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            This is a success message!
-          </Alert>
-        </Snackbar>
-
-        <Snackbar open={erro} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleCloseErro} severity="error" sx={{ width: '100%' }}>
-            Errossssssss!
-          </Alert>
-        </Snackbar>
     </div>
   );
 }

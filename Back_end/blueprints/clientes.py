@@ -1,11 +1,17 @@
 from flask import jsonify
 from connection_to_db import mydb
 from flask import Blueprint, request
+from flask_cors import CORS, cross_origin
+import json
+
 
 clientes = Blueprint("clientes", __name__)
 
+CORS(clientes)
+
 #CRIAR UM CLIENTE
 @clientes.route('/criar_cliente', methods={'GET','POST'})
+@cross_origin()
 def criar_cliente():
     if request.method == "POST":
         mycursor = mydb.cursor()
@@ -43,9 +49,12 @@ def ver_clientes_all():
     if request.method == "GET":
         mycursor = mydb.cursor()
         mycursor.execute("SELECT * FROM clientes")
+        row_headers= [x[0] for x in mycursor.description]
         myresult = mycursor.fetchall()
-        for cliente in myresult:
-            print (cliente)
+        json_data=[]
+        for result in myresult:
+                json_data.append(dict(zip(row_headers,result)))
+        return json.dumps(json_data)
     return jsonify(myresult)
 
 #VER APENAS UM CLIENTE
