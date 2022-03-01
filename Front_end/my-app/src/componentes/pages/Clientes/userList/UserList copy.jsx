@@ -10,30 +10,34 @@ import Snackbar from '@mui/material/Snackbar';
 
 const UserList = () => {
 
+ //Creating the state
   const [data, setData] = useState([]);
-  const [open, setOpen] = React.useState(false);
-  const [erro, setErro] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [erro, setErro] = useState(false);
 
+  //Automate the closing of delete confirmation popups
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
+      window.location.reaload()
       return;
     }  setOpen(false);
   };
 
+  //Automate the closing of error popups
   const handleCloseErro = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }  setErro(false);
   };
 
-
+  // Function for the delete icon to delete the data in the database
   function handleDelete(id_cliente){
-    console.log(id_cliente)
     axios.delete(`http://127.0.0.1:5000/clientes/delete_cliente`, {data: {'id_cliente' : id_cliente}})
       .then (res =>  setOpen(true))
       .catch(err => setErro(true));
   }
-  
+
+  //Columns
   const columns = [
     {field: 'id_cliente', headerName: 'Número Cliente', width: 120 },
     {field: 'nome_cliente', headerName: 'Nome', width: 250},
@@ -47,7 +51,7 @@ const UserList = () => {
       return(
         <>
           <Link to={"/Ver%20Clientes/"+params.row.id_cliente}>
-            <button className='userListEdit'>Edit</button> 
+            <button className='userListEdit'>Editar</button> 
           </Link>
           <DeleteOutline className='userListDelete' onClick={() => handleDelete(params.row.id_cliente)}/>
         </>
@@ -62,8 +66,6 @@ const UserList = () => {
       setData(resp)})
   },[])
 
-  console.log(data)
-  
   return (
     <div style={{ height: 650, width: '100%' }} className="userList">
       <DataGrid
@@ -75,17 +77,23 @@ const UserList = () => {
         getRowId={row => row.id_cliente}
       />
  
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            This is a success message!
-          </Alert>
-        </Snackbar>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Cliente apagado com sucesso!
+        </Alert>
+      </Snackbar>
 
-        <Snackbar open={erro} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleCloseErro} severity="error" sx={{ width: '100%' }}>
-            Errossssssss!
-          </Alert>
-        </Snackbar>
+      <Snackbar open={erro} autoHideDuration={6000} onClose={handleClose}anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}>
+        <Alert onClose={handleCloseErro} severity="error" sx={{ width: '100%' }}>
+          Existem encomendas ativas para este cliente!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

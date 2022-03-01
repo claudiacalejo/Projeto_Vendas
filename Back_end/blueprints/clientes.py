@@ -23,7 +23,7 @@ def criar_cliente():
             request_json["codigo_postal"],
             request_json["localidade"],
             request_json["telefone_cliente"],
-            request_json["instragram_cliente"],
+            request_json["instagram_cliente"],
             request_json["email"],
         )
         mycursor.execute(mysql,val)
@@ -53,40 +53,41 @@ def ver_clientes_all():
         myresult = mycursor.fetchall()
         json_data=[]
         for result in myresult:
-                json_data.append(dict(zip(row_headers,result)))
+            json_data.append(dict(zip(row_headers,result)))
         return json.dumps(json_data)
     return jsonify(myresult)
 
 #VER APENAS UM CLIENTE
-@clientes.route('/ver_cliente',  methods=['GET'])
-def ver_cliente():
-    client = ""
+@clientes.route('/ver_cliente/<int:id_cliente>',  methods=['GET'])
+def ver_cliente(id_cliente):
+    # client = ""
     if request.method == "GET":
         mycursor = mydb.cursor()
-        request_json = request.get_json()
-        id_cliente = request_json["id_cliente"]
-        mycursor.execute(f"SELECT * FROM clientes WHERE id_cliente=\"{id_cliente}\" ")
+        #request_json = request.get_json()
+        #id_cliente = request_json["id_cliente"]
+        mycursor.execute(f"SELECT * FROM clientes WHERE id_cliente=\"{id_cliente}\"")
         client = mycursor.fetchone()
     return jsonify(client)
 
 
 #UPDATE CLIENTE
-@clientes.route('/update_cliente',  methods=['POST'])
-def update_cliente():
+@clientes.route('/update_cliente/<int:id_cliente>',  methods=['POST'])
+def update_cliente(id_cliente):
     if request.method == "POST":
         mycursor = mydb.cursor()
         request_json = request.get_json()
-        id_cliente = request_json["id_cliente"]
-        mysql = f"UPDATE clientes SET nome_cliente = %s ,morada_cliente  = %s, codigo_postal = %s, localidade = %s, telefone_cliente = %s, instagram_cliente = %s, email = %s WHERE id_cliente = {id_cliente}"
+        #id_cliente = request_json["id_cliente"]
+        mysql = "UPDATE clientes SET nome_cliente = %s ,morada_cliente  = %s, codigo_postal = %s, localidade = %s, telefone_cliente = %s, instagram_cliente = %s, email = %s WHERE id_cliente = %s"
         val = (
             request_json["nome_cliente"],
             request_json["morada_cliente"],
             request_json["codigo_postal"],
             request_json["localidade"],
             request_json["telefone_cliente"],
-            request_json["instragram_cliente"],
+            request_json["instagram_cliente"],
             request_json["email"],
+            request_json["id_cliente"],
         )
-        mycursor.execute(mysql,val)
+        mycursor.execute(mysql, val)
         mydb.commit()
     return "Cliente updated"

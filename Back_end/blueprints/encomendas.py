@@ -62,21 +62,20 @@ def ver_encomenda():
 
 
 #UPDATE ENCOMENDA
-@encomendas.route('/update_encomendas',  methods=['POST'])
-def update_produto():
+@encomendas.route('/update_encomendas/<int:id_encomendas>',  methods=['POST'])
+def update_produto(id_encomendas):
     if request.method == "POST":
         mycursor = mydb.cursor()
         request_json = request.get_json()
-        id_encomendas = request_json["id_encomendas"]
-        mysql = f"UPDATE encomendas SET id_cliente = %s, data_encomenda = %s, data_entrega = %s, hora_entrega = %s, metodo_entrega = %s, status = %s, observacoes =%s  WHERE id_encomendas = {id_encomendas}"
+        mysql = "UPDATE encomendas SET id_cliente = %s, data_encomenda = %s, data_entrega = %s, hora_entrega = %s, metodo_entrega = %s, status = %s, observacoes =%s  WHERE id_encomendas = %s"
         val = (
-            request_json["id_cliente"],
             request_json["data_encomenda"],
             request_json["data_entrega"],
             request_json["hora_entrega"],
             request_json["metodo_entrega"],
             request_json["status"],
-            request_json["observacoes"]
+            request_json["observacoes"],
+            request_json["id_cliente"]
         )
         mycursor.execute(mysql,val)
         mydb.commit()

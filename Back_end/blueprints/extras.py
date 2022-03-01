@@ -1,8 +1,10 @@
 from flask import jsonify
+from flask_cors import CORS
 from connection_to_db import mydb
 from flask import Blueprint, request
 
 extras = Blueprint("extras", __name__)
+
 
 #CRIAR UM NOVO EXTRA
 @extras.route('/criar_extra', methods={'GET','POST'})

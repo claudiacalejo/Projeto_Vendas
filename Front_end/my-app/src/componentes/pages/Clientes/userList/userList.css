@@ -7,14 +7,6 @@
     align-items: center;
 }
 
-.userListImg{
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
-}
-
 .userListEdit{
     border: none;
     border-radius: 10px;
@@ -23,7 +15,6 @@
     color: white;
     margin-right: 10px;
     cursor: pointer;
-
 }
 
 .userListDelete{
