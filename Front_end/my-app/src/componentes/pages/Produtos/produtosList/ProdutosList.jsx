@@ -43,7 +43,7 @@ const Lista_Produtos = () => {
     {field: 'id_produtos', headerName: 'Nº Produto', width: 120 },
     {field: 'nome_produto', headerName: 'Nome', width: 200},
     {field: 'massa', headerName: 'Massa', width: 150 },
-    {field: 'recheio', headerName: 'Recheio', width: 110},
+    {field: 'recheio', headerName: 'Recheio', width: 150},
     {field: 'tamanho', headerName: 'Tamanho', width: 110},
     {field: 'preco_custo', headerName: 'Preço de custo', width: 120,
       valueFormatter: (params) => {
@@ -57,7 +57,7 @@ const Lista_Produtos = () => {
       return(
         <>
           <Link to={"/Ver%20Produtos/"+params.row.id_produtos}>
-            <button className='produtosListEdit'>Editar</button> 
+            <button className='produtosListEdit'>Ver</button> 
           </Link>
           <DeleteOutline className='produtosListDelete' onClick={() => handleDelete(params.row.id_produtos)}/>
         </>
@@ -73,7 +73,7 @@ const Lista_Produtos = () => {
   },[])
 
   return (
-    <div style={{ height: 650, width: '100%' }} className="produtosList">
+    <div style={{ height: 650, width: '98%' }} className="produtosList">
       <DataGrid
         rows={data}
         disableSelectionOnClick

@@ -1,4 +1,4 @@
-import './userList.css'
+import './encomendaList.css'
 import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from '@material-ui/icons';
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import Alert from '@mui/material/Alert';
 import React from 'react'
 import Snackbar from '@mui/material/Snackbar';
 
-const UserList = () => {
+const EncomendaList = () => {
 
  //Creating the state
   const [data, setData] = useState([]);
@@ -31,50 +31,49 @@ const UserList = () => {
   };
 
   // Function for the delete icon to delete the data in the database
-  function handleDelete(id_cliente){
-    axios.delete(`http://127.0.0.1:5000/clientes/delete_cliente`, {data: {'id_cliente' : id_cliente}})
-      .then (res =>  setOpen(true))
-      .catch(err => setErro(true));
+  function handleDelete(id_encomendas){
+    axios.delete(`http://127.0.0.1:5000/encomendas/delete_encomenda`, {data: {'id_encomendas' : id_encomendas}})
+      .then (res =>  setOpen(true), setOpen(false))
+      .catch(err => setErro(true), setErro(false));
   }
 
   //Columns
   const columns = [
-    {field: 'id_cliente', headerName: 'Número Cliente', width: 120 },
-    {field: 'nome_cliente', headerName: 'Nome', width: 250},
-    {field: 'morada_cliente', headerName: 'Morada', width: 150 },
-    {field: 'codigo_postal', headerName: 'Código Postal', width: 110},
-    {field: 'localidade', headerName: 'Localidade', width: 110},
-    {field: 'telefone_cliente', headerName: 'Telefone', width: 90},
-    {field: 'instagram_cliente', headerName: 'Instagram', width: 120},
-    {field: 'email', headerName: 'Email', width: 100},
+    {field: 'id_encomendas', headerName: 'Número Encomenda', width: 120 },
+    {field: 'nome_cliente', headerName: 'Nome Cliente', width: 250},
+    {field: 'produtos', headerName: 'Produtos', width: 250},
+    {field: 'data_entrega', headerName: 'Data entrega', width: 150 },
+    {field: 'preco', headerName: 'Preço', width: 110},
+    {field: 'observacoes', headerName: 'Observações', width: 110},
+    {field: 'status', headerName: 'Status', width: 90},
     {field: 'action', headerName: 'Action', width: 100, renderCell:(params)=>{
       return(
         <>
-          <Link to={"/Ver%20Clientes/"+params.row.id_cliente}>
-            <button className='userListEdit'>Editar</button> 
+          <Link to={"/Ver%20Encomenda/"+params.row.id_encomenda}>
+            <button className='userListEdit'>Ver</button> 
           </Link>
-          <DeleteOutline className='userListDelete' onClick={() => handleDelete(params.row.id_cliente)}/>
+          <DeleteOutline className='userListDelete' onClick={() => handleDelete(params.row.id_encomendas)}/>
         </>
       )
     }},
   ];
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/clientes/ver_clientes_todos")
+    fetch("http://127.0.0.1:5000/encomendas/ver_encomendas_todas")
     .then(resp => resp.json())
     .then(resp =>{
       setData(resp)})
   },[])
 
   return (
-    <div style={{ height: 650, width: '100%' }} className="userList">
+    <div style={{height: 650, width: '98%' }} className="userList">
       <DataGrid
         rows={data}
         disableSelectionOnClick
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[5]}
-        getRowId={row => row.id_cliente}
+        getRowId={row => row.id_encomendas}
       />
  
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{
@@ -98,4 +97,4 @@ const UserList = () => {
   );
 }
 
-export default UserList
+export default EncomendaList

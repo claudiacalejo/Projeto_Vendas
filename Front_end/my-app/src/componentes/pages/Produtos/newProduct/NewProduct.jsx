@@ -71,35 +71,35 @@ export default function New_Product() {
                             < CakeIcon className="userShowIcon"/>  
                             <label> Massa </label>
                         </div>
-                        <input type="text" className="userUpdateInp" placeholder="Morada" onChange={(e) =>{setMassa(e.target.value)}} />
+                        <input type="text" className="userUpdateInp" placeholder="Sabor da massa" onChange={(e) =>{setMassa(e.target.value)}} />
                     </div>
                     <div className="userUpdateItem">
                         <div className="userShowInfo">  
                             < IcecreamIcon className="userShowIcon"/>  
                             <label> Recheio </label>
                         </div>
-                        <input type="text" className="userUpdateInp" placeholder="Código Postal" onChange={(e) =>{setRecheio(e.target.value)}} />
+                        <input type="text" className="userUpdateInp" placeholder="Sabor do recheio" onChange={(e) =>{setRecheio(e.target.value)}} />
                     </div>
                     <div className="userUpdateItem">
                         <div className="userShowInfo">  
                             < HeightIcon className="userShowIcon"/>  
                             <label> Tamanho </label>
                         </div>
-                        <input type="text" className="userUpdateInp" placeholder="Localidade" onChange={(e) =>{setTamanho(e.target.value)}} />
+                        <input type="text" className="userUpdateInp" placeholder="Tamanho" onChange={(e) =>{setTamanho(e.target.value)}} />
                     </div>
                     <div className="userUpdateItem">
                         <div className="userShowInfo">  
                             < EuroIcon color="error" className="userShowIcon"/>  
                             <label> Preço de Custo </label>
                         </div>
-                        <input type="text" className="userUpdateInp" placeholder="Telefone" onChange={(e) =>{setPreco_custo(e.target.value)}} />
+                        <input type="text" className="userUpdateInp" placeholder="Preço de custo" onChange={(e) =>{setPreco_custo(e.target.value)}} />
                     </div>
                     <div className="userUpdateItem">
                         <div className="userShowInfo">  
                             < EuroIcon color="success" className="userShowIcon"/>  
                             <label> Preço de Venda </label>
                         </div>
-                        <input type="text" className="userUpdateInp" placeholder="Instagram" onChange={(e) =>{setPreco_venda(e.target.value)}} />
+                        <input type="text" className="userUpdateInp" placeholder="Preço de venda" onChange={(e) =>{setPreco_venda(e.target.value)}} />
                     </div>
                 </div>
                 <div className="userUpdateRight">

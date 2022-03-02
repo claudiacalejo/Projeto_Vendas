@@ -1,6 +1,7 @@
 from flask import jsonify
 from connection_to_db import mydb
 from flask import Blueprint, request
+import json
 
 encomendas = Blueprint("encomendas", __name__)
 
@@ -42,10 +43,17 @@ def ver_encomendas_all():
     myresult=[]
     if request.method == "GET":
         mycursor = mydb.cursor()
-        mycursor.execute("SELECT * FROM encomendas")
+        mycursor.execute("SELECT encomendas.*, clientes.nome_cliente FROM encomendas, clientes WHERE encomendas.id_cliente = clientes.id_cliente")
+        row_headers= [x[0] for x in mycursor.description]
         myresult = mycursor.fetchall()
-        for encomenda in myresult:
-            print (encomenda)
+        json_data=[]
+        for result in myresult:
+            result = list(result)
+            result[2] = result[2].strftime("%d/%m/%Y")
+            result[3] = result[3].strftime("%d/%m/%Y")
+            result = tuple(result)
+            json_data.append(dict(zip(row_headers,result)))
+        return json.dumps(json_data)
     return jsonify(myresult)
 
 #VER APENAS UMA ENCOMENDA
@@ -80,3 +88,4 @@ def update_produto(id_encomendas):
         mycursor.execute(mysql,val)
         mydb.commit()
     return "Encomenda Updated"
+

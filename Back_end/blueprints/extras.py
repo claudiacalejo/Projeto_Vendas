@@ -2,6 +2,7 @@ from flask import jsonify
 from flask_cors import CORS
 from connection_to_db import mydb
 from flask import Blueprint, request
+import json
 
 extras = Blueprint("extras", __name__)
 
@@ -40,31 +41,30 @@ def ver_extras_all():
     if request.method == "GET":
         mycursor = mydb.cursor()
         mycursor.execute("SELECT * FROM extras")
+        row_headers= [x[0] for x in mycursor.description]
         myresult = mycursor.fetchall()
-        for extra in myresult:
-            print (extra)
+        json_data=[]
+        for result in myresult:
+            json_data.append(dict(zip(row_headers,result)))
+        return json.dumps(json_data)
     return jsonify(myresult)
 
 #VER APENAS UM EXTRA
-@extras.route('/ver_extras',  methods=['GET'])
-def ver_extras():
-    extra = ""
+@extras.route('/ver_extras/<int:id_extras>',  methods=['GET'])
+def ver_extras(id_extras):
     if request.method == "GET":
         mycursor = mydb.cursor()
-        request_json = request.get_json()
-        id_extras = request_json["id_extras"]
         mycursor.execute(f"SELECT * FROM extras WHERE id_extras = \"{id_extras}\" ")
         extra = mycursor.fetchone()
     return jsonify(extra)
 
 #UPDATE EXTRA
-@extras.route('/update_extras',  methods=['POST'])
-def update_extras():
+@extras.route('/update_extras/<int:id_extras>',  methods=['POST'])
+def update_extras(id_extras):
     if request.method == "POST":
         mycursor = mydb.cursor()
         request_json = request.get_json()
-        id_extras = request_json["id_extras"]
-        mysql = f"UPDATE extras SET nome_extras = %s, preco_extras = %s WHERE id_extras = {id_extras}"
+        mysql = "UPDATE extras SET nome_extras = %s, preco_extras = %s WHERE id_extras = %s"
         val = (
             request_json["nome_extras"],
             request_json["preco_extras"]

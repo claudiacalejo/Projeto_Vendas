@@ -51,7 +51,7 @@ const UserList = () => {
       return(
         <>
           <Link to={"/Ver%20Clientes/"+params.row.id_cliente}>
-            <button className='userListEdit'>Editar</button> 
+            <button className='userListEdit'> Ver</button> 
           </Link>
           <DeleteOutline className='userListDelete' onClick={() => handleDelete(params.row.id_cliente)}/>
         </>
@@ -67,7 +67,7 @@ const UserList = () => {
   },[])
 
   return (
-    <div style={{ height: 650, width: '100%' }} className="userList">
+    <div style={{height: 650, width: '98%' }} className="userList">
       <DataGrid
         rows={data}
         disableSelectionOnClick

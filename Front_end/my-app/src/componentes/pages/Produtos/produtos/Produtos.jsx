@@ -110,7 +110,7 @@ export default function User() {
                     <div className="userUpdateUpload">
                         <input type="file" id="file" style={{display: "none"}}/>
                     </div>
-                    <button className="userUpdateButton" onClick={updateProdutos}>Update</button>
+                    <button className="userUpdateButton" onClick={updateProdutos}>Actualizar</button>
 
                 </div>
             </form>
