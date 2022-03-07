@@ -28,13 +28,13 @@ export default function User() {
         .then(resp => resp.json())
         .then(resp =>{
           setData(resp)
-          setId_produtos(resp[0])
-          setNome_produto(resp[1])
-          setMassa(resp[2])
-          setRecheio(resp[3])
-          setTamanho(resp[4])
-          setPreco_custo(resp[5])
-          setPreco_venda(resp[6])
+          setId_produtos(resp["id_produtos"])
+          setNome_produto(resp["nome_produto"])
+          setMassa(resp["massa"])
+          setRecheio(resp["recheio"])
+          setTamanho(resp["tamanho"])
+          setPreco_custo(resp[ "preco_custo"])
+          setPreco_venda(resp["preco_venda"])
         })
       },[])
 
@@ -49,7 +49,7 @@ export default function User() {
             "preco_venda" : preco_venda,
         }
         fetch(`http://127.0.0.1:5000/produtos/update_produtos/${id_produtos_ver}`, {
-            method : 'POST',
+            method : 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

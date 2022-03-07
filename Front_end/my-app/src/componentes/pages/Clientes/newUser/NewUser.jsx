@@ -25,19 +25,23 @@ export default function New_User() {
      //Automate the closing of delete confirmation popups
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-        window.location.reaload()
-        return;
-        }  setOpen(false);
+            return;
+        }  
+        window.location.reload();
+        setOpen(false);
     };
 
   //Automate the closing of error popups
     const handleCloseErro = (event, reason) => {
         if (reason === 'clickaway') {
-        return;
-        }  setErro(false);
+            return;
+        } 
+        window.location.reload();
+        setErro(false);
     };
 
-      function criarUser() {
+      function criarUser(event) {
+        event.preventDefault()
         let data = {
             "nome_cliente": nome_cliente,
             "morada_cliente": morada_cliente,
@@ -54,8 +58,8 @@ export default function New_User() {
                 'Content-Type': 'application/json'
               },
             body:JSON.stringify(data)
-        }) .then (res =>  setOpen(true), setOpen(false))
-        .catch(err => setErro(true), setErro(false));
+        }).then (res =>  {setOpen(true); setData(res)})
+        .catch(err => setErro(true));
       }
 
   return (
@@ -129,7 +133,7 @@ export default function New_User() {
                  </Alert>
             </Snackbar>
 
-            <Snackbar open={erro} autoHideDuration={6000} onClose={handleClose}anchorOrigin={{
+            <Snackbar open={erro} autoHideDuration={6000} onClose={handleCloseErro} anchorOrigin={{
                       vertical: 'top',
                       horizontal: 'center',
                     }}>

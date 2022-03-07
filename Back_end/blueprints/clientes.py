@@ -1,93 +1,78 @@
-from flask import jsonify
-from connection_to_db import mydb
+from flask import jsonify, session
+from utils.db import db
 from flask import Blueprint, request
-from flask_cors import CORS, cross_origin
+from flask_cors import cross_origin
 import json
-
+from models.cliente import Clientes
+from models.encomenda import Encomendas
 
 clientes = Blueprint("clientes", __name__)
-
-CORS(clientes)
 
 #CRIAR UM CLIENTE
 @clientes.route('/criar_cliente', methods={'GET','POST'})
 @cross_origin()
 def criar_cliente():
     if request.method == "POST":
-        mycursor = mydb.cursor()
         request_json = request.get_json()
-        mysql = "INSERT INTO clientes (nome_cliente, morada_cliente, codigo_postal, localidade, telefone_cliente, instagram_cliente, email) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        val = (
-            request_json["nome_cliente"],
-            request_json["morada_cliente"],
-            request_json["codigo_postal"],
-            request_json["localidade"],
-            request_json["telefone_cliente"],
-            request_json["instagram_cliente"],
-            request_json["email"],
+        cliente_novo = Clientes(
+        nome_cliente = request_json["nome_cliente"],
+        morada_cliente = request_json["morada_cliente"],
+        codigo_postal = request_json["codigo_postal"],
+        localidade = request_json["localidade"],
+        telefone_cliente = request_json["telefone_cliente"],
+        instagram_cliente = request_json["instagram_cliente"],
+        email = request_json["email"]
         )
-        mycursor.execute(mysql,val)
-        mydb.commit()
-    return "Novo Cliente criado com sucesso"
-
-#DELETE UM CLIENTE
-@clientes.route('/delete_cliente',  methods=['GET', 'DELETE'])
-def delete_cliente():
-    if request.method == "DELETE":
-        mycursor = mydb.cursor()
-        request_json = request.get_json()
-        val = request_json["id_cliente"]
-        mysql = f"DELETE FROM clientes WHERE id_cliente = {val} "
-        mycursor.execute(mysql)
-        mydb.commit()
-    return "Cliente Apagado"
+        db.session.add(cliente_novo)
+        db.session.commit()
+        return "Cliente criado"
+    return "Cliente não criado"
 
 #VER TODOS OS CLIENTES
 @clientes.route('/ver_clientes_todos',  methods=['GET'])
+@cross_origin()
 def ver_clientes_all():
-    myresult=[]
     if request.method == "GET":
-        mycursor = mydb.cursor()
-        mycursor.execute("SELECT * FROM clientes")
-        row_headers= [x[0] for x in mycursor.description]
-        myresult = mycursor.fetchall()
-        json_data=[]
-        for result in myresult:
-            json_data.append(dict(zip(row_headers,result)))
-        return json.dumps(json_data)
-    return jsonify(myresult)
+        clientes = Clientes.query.all()
+        clientes_as_dict = []
+        for cliente in clientes:
+            clientes_as_dict.append(cliente.convert_to_dict())
+        return json.dumps(clientes_as_dict)
+
 
 #VER APENAS UM CLIENTE
 @clientes.route('/ver_cliente/<int:id_cliente>',  methods=['GET'])
+@cross_origin()
 def ver_cliente(id_cliente):
-    # client = ""
     if request.method == "GET":
-        mycursor = mydb.cursor()
-        #request_json = request.get_json()
-        #id_cliente = request_json["id_cliente"]
-        mycursor.execute(f"SELECT * FROM clientes WHERE id_cliente=\"{id_cliente}\"")
-        client = mycursor.fetchone()
-    return jsonify(client)
-
+        cliente = Clientes.query.filter(Clientes.id_cliente == id_cliente).first()
+        return json.dumps(cliente.convert_to_dict())
 
 #UPDATE CLIENTE
-@clientes.route('/update_cliente/<int:id_cliente>',  methods=['POST'])
+@clientes.route('/update_cliente/<int:id_cliente>',  methods=['PUT'])
+@cross_origin()
 def update_cliente(id_cliente):
-    if request.method == "POST":
-        mycursor = mydb.cursor()
+    if request.method == "PUT":
         request_json = request.get_json()
-        #id_cliente = request_json["id_cliente"]
-        mysql = "UPDATE clientes SET nome_cliente = %s ,morada_cliente  = %s, codigo_postal = %s, localidade = %s, telefone_cliente = %s, instagram_cliente = %s, email = %s WHERE id_cliente = %s"
-        val = (
-            request_json["nome_cliente"],
-            request_json["morada_cliente"],
-            request_json["codigo_postal"],
-            request_json["localidade"],
-            request_json["telefone_cliente"],
-            request_json["instagram_cliente"],
-            request_json["email"],
-            request_json["id_cliente"],
-        )
-        mycursor.execute(mysql, val)
-        mydb.commit()
-    return "Cliente updated"
+        db.session.query(Clientes).filter(Clientes.id_cliente==id_cliente).update(
+            {"nome_cliente": request_json["nome_cliente"],
+            "morada_cliente": request_json["morada_cliente"],
+            "codigo_postal": request_json["codigo_postal"],
+            "localidade": request_json["localidade"],
+            "telefone_cliente": request_json["telefone_cliente"],
+            "instagram_cliente": request_json["instagram_cliente"],
+            "email": request_json["email"]})
+        db.session.commit()
+        return "Updatado com sucesso"
+
+#DELETE UM CLIENTE
+@clientes.route('/delete_cliente/<int:id_cliente>',  methods=['GET', 'DELETE'])
+@cross_origin()
+def delete_cliente(id_cliente):
+    if request.method == "DELETE":
+        cliente = Clientes.query.get(id_cliente)
+        db.session.delete(cliente)
+        db.session.commit()
+        return"cliente deletado"
+
+

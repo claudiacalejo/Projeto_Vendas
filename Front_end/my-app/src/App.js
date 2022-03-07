@@ -16,7 +16,8 @@ import New_Extra from "./componentes/pages/Extras/newExtra/NewExtra";
 import Extra from "./componentes/pages/Extras/extra/Extra";
 import ExtrasList from "./componentes/pages/Extras/ExtrasList/ExtrasList";
 //Encomendas
-import EncomendaList from "./componentes/pages/Encomendas/encomendaList/EncomendaList";
+//import EncomendaList from "./componentes/pages/Encomendas/encomendaList/EncomendaList";
+import Nova_Encomenda from "./componentes/pages/Encomendas/newEncomenda/NewEncomenda";
 
 function App() {
   return (
@@ -46,10 +47,9 @@ function App() {
               <Route exact path="/Adicionar%20Extra" element={<New_Extra/>}/>
 
               {/* Encomendas */}
-              <Route exact path="/Ver%20Encomendas" element={<EncomendaList/>}/>
-              {/* <Route exact path="/Ver%20Encomendas/:extrasid" element={<Extra/>}/> */}
+              {/* <Route exact path="/Ver%20Encomendas/:extrasid" element={<EncomendaList/>}/> */}
+              <Route exact path="/Nova%20Encomenda" element={<Nova_Encomenda/>}/>
               {/* <Route exact path="/Adicionar%20Extra" element={<New_Extra/>}/> */}
-
             </Routes>
           </div>
         </div>

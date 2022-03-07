@@ -19,7 +19,7 @@ const Lista_Produtos = () => {
   //Automate the closing of delete confirmation popups
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
-      window.location.reaload()
+      window.location.reload()
       return;
     }  setOpen(false);
   };
@@ -27,15 +27,21 @@ const Lista_Produtos = () => {
   //Automate the closing of error popups
   const handleCloseErro = (event, reason) => {
     if (reason === 'clickaway') {
+      window.location.reload();
       return;
     }  setErro(false);
   };
 
   // Function for the delete icon to delete the data in the database
   function handleDelete(id_produtos){
-    axios.delete(`http://127.0.0.1:5000/produtos/delete_produto`, {data: {'id_produtos' : id_produtos}})
-      .then (res =>  setOpen(true))
-      .catch(err => setErro(true));
+    fetch(`http://127.0.0.1:5000/produtos/delete_produto/${id_produtos}`,{
+      method : 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    }).then(res => setOpen(true))
+    .catch(err =>setErro(true));
   }
 
   //Columns

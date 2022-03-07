@@ -11,7 +11,6 @@ export default function Extra() {
     var url = "http://127.0.0.1:5000/extras/ver_extras/" + id_extra_ver
 
     //grab the data from databse
-    const [data, setData] = useState([]);
     const [id_extras, setId_extras] = useState("");
     const [nome_extras, setNome_extras] = useState("");
     const [preco_extras, setPreco_extras] = useState("");
@@ -22,10 +21,9 @@ export default function Extra() {
         .then(resp => resp.json())
         .then(resp =>{
             console.log(resp)
-          setData(resp)
-          setId_extras(resp[0])
-          setNome_extras(resp[1])
-          setPreco_extras(resp[2])
+          setId_extras(resp["id_extras"])
+          setNome_extras(resp["nome_extras"])
+          setPreco_extras(resp["preco_extras"])
          
         })
       },[])
@@ -36,8 +34,9 @@ export default function Extra() {
             "nome_extras": nome_extras,
             "preco_extras": preco_extras,
         }
-        fetch(`http://127.0.0.1:5000/extras/update_cliente/${id_extra_ver}`, {
-            method : 'POST',
+
+        fetch(`http://127.0.0.1:5000/extras/update_extras/${id_extra_ver}`, {
+            method : 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

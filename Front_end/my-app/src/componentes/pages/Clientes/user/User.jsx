@@ -15,7 +15,7 @@ export default function User() {
     var url = "http://127.0.0.1:5000/clientes/ver_cliente/" + id_cliente_ver
 
     //grab the data from databse
-    const [data, setData] = useState([]);
+    //const [data, setData] = useState([]);
     const [id_cliente, setId_cliente] = useState("");
     const [nome_cliente, setNome_cliente] = useState("");
     const [morada_cliente, setMorada_cliente] = useState("");
@@ -29,15 +29,15 @@ export default function User() {
         fetch(url)
         .then(resp => resp.json())
         .then(resp =>{
-          setData(resp)
-          setId_cliente(resp[0])
-          setNome_cliente(resp[1])
-          setMorada_cliente(resp[2])
-          setCodigo_postal(resp[3])
-          setLocalidade(resp[4])
-          setTelefone(resp[5])
-          setInstagram(resp[6])
-          setEmail(resp[7])
+          //setData(resp)
+          setId_cliente(resp["id_cliente"])
+          setNome_cliente(resp["nome_cliente"])
+          setMorada_cliente(resp["morada_cliente"])
+          setCodigo_postal(resp["codigo_postal"])
+          setLocalidade(resp["localidade"])
+          setTelefone(resp["telefone_cliente"])
+          setInstagram(resp["instagram_cliente"])
+          setEmail(resp["email"])
         })
       },[])
 
@@ -52,8 +52,9 @@ export default function User() {
             "instagram_cliente" : instagram_cliente,
             "email": email
         }
+        
         fetch(`http://127.0.0.1:5000/clientes/update_cliente/${id_cliente_ver}`, {
-            method : 'POST',
+            method : 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

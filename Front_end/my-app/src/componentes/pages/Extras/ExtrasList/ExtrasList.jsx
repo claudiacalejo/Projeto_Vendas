@@ -18,7 +18,7 @@ const ExtrasList = () => {
   //Automate the closing of delete confirmation popups
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
-      window.location.reaload()
+      window.location.reload()
       return;
     }  setOpen(false);
   };
@@ -26,16 +26,21 @@ const ExtrasList = () => {
   //Automate the closing of error popups
   const handleCloseErro = (event, reason) => {
     if (reason === 'clickaway') {
-      window.location.reaload()
+      window.location.reload()
       return;
     }  setErro(false);
   };
 
   // Function for the delete icon to delete the data in the database
   function handleDelete(id_extras){
-    axios.delete(`http://127.0.0.1:5000/extras/delete_extras`, {data: {'id_extras' : id_extras}})
-      .then (res =>  setOpen(true),setOpen(false))
-      .catch(err => setErro(true),setErro(false));
+    fetch(`http://127.0.0.1:5000/extras/delete_extras/${id_extras}`, {
+      method : 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    }).then(res =>  setOpen(true))
+    .catch(err =>setErro(true));
   }
 
   //Columns

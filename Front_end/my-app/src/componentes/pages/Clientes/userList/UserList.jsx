@@ -3,7 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { DeleteOutline } from '@material-ui/icons';
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import React from 'react'
 import Snackbar from '@mui/material/Snackbar';
@@ -18,7 +17,7 @@ const UserList = () => {
   //Automate the closing of delete confirmation popups
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
-      window.location.reaload()
+      window.location.reload();
       return;
     }  setOpen(false);
   };
@@ -26,15 +25,22 @@ const UserList = () => {
   //Automate the closing of error popups
   const handleCloseErro = (event, reason) => {
     if (reason === 'clickaway') {
+      window.location.reload();
       return;
     }  setErro(false);
+    
   };
 
   // Function for the delete icon to delete the data in the database
   function handleDelete(id_cliente){
-    axios.delete(`http://127.0.0.1:5000/clientes/delete_cliente`, {data: {'id_cliente' : id_cliente}})
-      .then (res =>  setOpen(true))
-      .catch(err => setErro(true));
+    fetch(`http://127.0.0.1:5000/clientes/delete_cliente/${id_cliente}`,{
+      method : 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    }).then(res =>  setOpen(true))
+    .catch(err =>setErro(true));
   }
 
   //Columns
